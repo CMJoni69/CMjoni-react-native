@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import {
+  Image,
   SafeAreaView,
   StyleSheet,
   ScrollView,
@@ -11,6 +12,8 @@ import {
   TouchableOpacity,
   TextInput
 } from 'react-native';
+import axios from 'axios'
+const urlAPI = 'https://jsonplaceholder.typicode.com/posts'
 
 
 
@@ -22,7 +25,8 @@ class App extends Component {
       nama: '-',
       username: '',
       password: '',
-      isLogin: false
+      isLogin: false,
+      data: []
     }
 
 
@@ -48,7 +52,7 @@ class App extends Component {
             value={this.state.password}
             onChangeText={(value) => this.setState({ password: value })}
           />
-          
+
           {/* BUTTON LOGIN */}
           {!this.state.isLogin && (<TouchableOpacity
             style={{ width: 100, height: 40, backgroundColor: 'green', borderRadius: 15, marginTop: 20 }}
@@ -65,6 +69,19 @@ class App extends Component {
             <Text style={{ width: '100%', textAlign: "center" }}>logout</Text>
           </TouchableOpacity>)}
         </View>
+
+        {/* Call API */}
+        <TouchableOpacity
+          style={{ width: 100, height: 40, backgroundColor: 'green', borderRadius: 15, marginTop: 20 }}
+          onPress={() => this.callAPIfunction()
+          }
+        >
+          <Text style={{ width: '100%', textAlign: "center" }}>callAPI</Text>
+        </TouchableOpacity>
+        <Image
+          style={{ height: 200, width: 200 }}
+          source={{ uri: 'https://via.placeholder.com/600/92c952' }}
+        />
 
         <View style={{ flexDirection: "row", width: "100%", backgroundColor: "orange", height: 40 }}>
           <Text style={{ backgroundColor: "#0000FF", color: "white", flex: 1, height: 20 }}>Lezar</Text>
@@ -138,6 +155,15 @@ class App extends Component {
   }
   logOut() {
     this.setState({ isLogin: false, nama: '-' })
+  }
+
+  callAPIfunction() {
+    console.log("CALLING API .... ")
+    axios.get('https://jsonplaceholder.typicode.com/posts/1').then(res => {
+      alert(res.title)
+      console.log(res.title)
+      this.setState({ nama: res })
+    })
   }
 }
 
